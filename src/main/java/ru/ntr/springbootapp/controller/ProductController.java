@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.ntr.springbootapp.dao.ProductDAO;
+import ru.ntr.springbootapp.repository.ProductRepository;
 import ru.ntr.springbootapp.model.Product;
 
 import javax.validation.Valid;
@@ -15,22 +15,22 @@ import javax.validation.Valid;
 @Slf4j
 public class ProductController {
 
-    private final ProductDAO productDAO;
+    private final ProductRepository repository;
 
-    public ProductController(ProductDAO productDAO) {
-        this.productDAO = productDAO;
+    public ProductController(ProductRepository repository) {
+        this.repository = repository;
     }
 
     @GetMapping()
     public String showProducts(Model model) {
-        model.addAttribute("products", productDAO.index());
+        model.addAttribute("products", repository.index());
         log.info("/products");
         return "index";
     }
 
     @GetMapping("/{id}")
     public String showProduct(@PathVariable("id") int id, Model model) {
-        model.addAttribute("product", productDAO.getById(id));
+        model.addAttribute("product", repository.getById(id));
         log.info(":/id: " + id);
         return "show";
     }
@@ -43,7 +43,7 @@ public class ProductController {
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("product", productDAO.getById(id));
+        model.addAttribute("product", repository.getById(id));
         log.info("/" + id + "/edit");
         return "edit";
     }
@@ -54,7 +54,7 @@ public class ProductController {
             log.info("Binding result has errors.");
             return "new";
         }
-        productDAO.save(product);
+        repository.save(product);
         log.info("Product with id = " + product.getId() + " was saved.");
         return "redirect:/products";
     }
@@ -66,15 +66,15 @@ public class ProductController {
             log.info("Binding result has errors.");
             return "edit";
         }
-        productDAO.update(id, product);
+        product.setId(id);
+        repository.update(product);
         log.info("Product with id = " + id + " was updated.");
         return "redirect:/products";
     }
 
-
     @DeleteMapping("/{id}")
     public String deleteProduct(@PathVariable("id") int id) {
-        if (productDAO.delete(id)) {
+        if (repository.delete(id)) {
             log.info("Product with id = " + id + " was deleted.");
         } else {
             log.warn("Product with id = " + id + " was not deleted.");
