@@ -3,28 +3,49 @@ package ru.ntr.springbootapp.model;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "products")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-
 public class Product {
 
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
     @Column(name = "title")
-    @NotEmpty(message = "Name should not be empty.")
-    @Size(min = 2, max = 30, message = "Name should be between 2 and 30.")
     private String name;
 
-    @Column(name = "price")
-    @Min(value = 0, message = "Cost should be greater than 0.")
-    private double cost;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "price_id")
+    private Price price;
+
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "orders_products",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "order_id"),
+            foreignKey = @ForeignKey(name = "fk_orders_products_orders")
+    )
+    List<Order> orders;
+
+    public String getCustomers() {
+        return orders.stream()
+                .map(o -> o.getCustomer())
+                .distinct()
+                .map(c -> c.getName())
+                .sorted()
+                .collect(Collectors.joining(", "));
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

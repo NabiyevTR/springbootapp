@@ -27,15 +27,13 @@
     </tr>
     <tr th:each="product : ${products}">
         <td><a th:href="@{/products/{id}(id = ${product.getId()})}" th:text="${product.getName()}">product</a></td>
-        <td><span th:text="${product.getCost()}"> cost </span></td>
+        <td><span th:text="${product.getPrice().getCost()}"> cost </span></td>
     </tr>
 
     </tbody>
 </table>
 
-<div>
-    <a th:href="@{/products/new}">New</a>
-</div>
+
 
 </body>
 </html>
