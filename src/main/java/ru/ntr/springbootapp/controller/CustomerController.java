@@ -7,8 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.ntr.springbootapp.repository.CustomerRepository;
-import ru.ntr.springbootapp.repository.ProductRepository;
+import ru.ntr.springbootapp.service.CustomerService;
 
 @Controller
 @RequestMapping("/customers")
@@ -16,18 +15,18 @@ import ru.ntr.springbootapp.repository.ProductRepository;
 @RequiredArgsConstructor
 public class CustomerController {
 
-    private final CustomerRepository repository;
+    private final CustomerService customerService;
 
     @GetMapping()
     public String showProducts(Model model) {
-        model.addAttribute("customers", repository.findAll());
+        model.addAttribute("customers", customerService.findAll());
         log.info("/customers");
         return "customers/showAll";
     }
 
     @GetMapping("/{id}")
     public String showProduct(@PathVariable("id") int id, Model model) {
-        model.addAttribute("customer", repository.getById(id));
+        model.addAttribute("customer", customerService.findById(id));
         log.info(":/id: " + id);
         return "customers/show";
     }

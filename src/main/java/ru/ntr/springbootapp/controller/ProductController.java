@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.ntr.springbootapp.repository.ProductRepository;
+import ru.ntr.springbootapp.service.ProductService;
 
 
 @Controller
@@ -14,18 +14,18 @@ import ru.ntr.springbootapp.repository.ProductRepository;
 @RequiredArgsConstructor
 public class ProductController {
 
-    private final ProductRepository repository;
+    private final ProductService productService;
 
     @GetMapping()
     public String showProducts(Model model) {
-        model.addAttribute("products", repository.findAll());
+        model.addAttribute("products", productService.findAll());
         log.info("/products");
         return "products/showAll";
     }
 
     @GetMapping("/{id}")
     public String showProduct(@PathVariable("id") int id, Model model) {
-        model.addAttribute("product", repository.getById(id));
+        model.addAttribute("product", productService.findById(id));
         log.info(":/id: " + id);
         return "products/show";
     }
