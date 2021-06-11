@@ -1,25 +1,17 @@
 package ru.ntr.springbootapp.repository;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import ru.ntr.springbootapp.model.Product;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 
-@Repository
-@RequiredArgsConstructor
-public class ProductRepository {
+public interface ProductRepository extends JpaRepository<Product, Integer> {
 
-    private final EntityManager entityManager;
+    @Query("SELECT p FROM Product p")
+    List<Product> findAll();
 
-    public List<Product> findAll() {
-        return entityManager.createNativeQuery("SELECT * FROM products", Product.class).getResultList();
-    }
-
-    public Product getById(int id) {
-        return entityManager.find(Product.class, id);
-    }
+    Product findById(int id);
 
 }
