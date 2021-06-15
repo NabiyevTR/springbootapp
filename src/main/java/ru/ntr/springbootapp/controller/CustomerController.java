@@ -5,8 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ru.ntr.springbootapp.model.Product;
 import ru.ntr.springbootapp.service.CustomerService;
 
 @Controller
@@ -30,4 +32,5 @@ public class CustomerController {
         log.info(":/id: " + id);
         return "customers/show";
     }
+
 }

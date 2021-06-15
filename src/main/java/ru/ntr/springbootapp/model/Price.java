@@ -1,7 +1,6 @@
 package ru.ntr.springbootapp.model;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,7 +8,6 @@ import java.util.Date;
 @Entity
 @Table(name = "prices")
 @Data
-@NoArgsConstructor
 public class Price {
 
     @Id
@@ -22,4 +20,5 @@ public class Price {
 
     @Column(name = "date")
     private Date date;
+
 }

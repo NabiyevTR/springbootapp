@@ -8,9 +8,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "products")
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 public class Product {
 
     @Id
@@ -21,7 +19,8 @@ public class Product {
     @Column(name = "title")
     private String name;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    //TODO подумать как хранить весь список цен, но получать из базы только с последней датой
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "price_id")
     private Price price;
 
