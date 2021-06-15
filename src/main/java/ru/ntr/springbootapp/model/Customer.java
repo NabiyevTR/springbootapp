@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "customers")
 @Data
-@NoArgsConstructor
 public class Customer {
 
     @Id
