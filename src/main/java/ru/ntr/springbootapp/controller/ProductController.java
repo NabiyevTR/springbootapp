@@ -3,15 +3,14 @@ package ru.ntr.springbootapp.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.ntr.springbootapp.model.Product;
 import ru.ntr.springbootapp.service.ProductService;
 
 import java.util.Date;
 
-@Controller
+@RestController
 @RequestMapping("/products")
 @Slf4j
 @RequiredArgsConstructor
@@ -20,40 +19,32 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping()
-    public String showProducts(Model model) {
-        return "redirect:/products/page/1";
+    public Page<Product> showProducts() {
+        return productService.findAll(0);
     }
 
     @GetMapping("/page/{page}")
-    public String showProducts(@PathVariable("page") int pageNumber, Model model) {
-        Page products = productService.findAll(--pageNumber);
-        model.addAttribute("products", products.getContent());
-        model.addAttribute("pageNumber", products.getNumber()+1);
-        model.addAttribute("totalPages", products.getTotalPages());
-        return "products/showAll";
+    public Page<Product> showProducts(@PathVariable("page") int pageNumber) {
+        return productService.findAll(--pageNumber);
+
     }
 
     @GetMapping("/{id}")
-    public String showProduct(@PathVariable("id") int id, Model model) {
-        model.addAttribute("product", productService.findById(id));
-        return "products/show";
+    public Product showProduct(@PathVariable("id") int id) {
+        return productService.findById(id);
     }
 
-    @GetMapping("/new")
-    public String addProduct(@ModelAttribute("product") Product product) {
-        return "products/new";
-    }
 
     @PostMapping()
-    public String create(@ModelAttribute("product") Product product) {
+    public Product create(@RequestBody Product product) {
         product.getPrice().setDate(new Date());
-        productService.save(product);
-        return "redirect:/products";
+        return productService.save(product);
+
     }
 
     @DeleteMapping("/{id}")
-    public String deleteProduct(@PathVariable("id") int id) {
+    public int deleteProduct(@PathVariable("id") int id) {
         productService.delete(id);
-        return "redirect:/products";
+        return HttpStatus.OK.value();
     }
 }
