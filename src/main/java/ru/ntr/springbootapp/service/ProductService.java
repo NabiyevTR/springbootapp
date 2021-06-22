@@ -1,15 +1,16 @@
 package ru.ntr.springbootapp.service;
 
-import org.springframework.data.domain.Page;
-import ru.ntr.springbootapp.model.Product;
+import ru.ntr.springbootapp.dto.ProductDto;
+
+import java.util.List;
 
 public interface ProductService {
 
-    Page<Product> findAll(int pageNumber);
+    List<ProductDto> findAll();
 
-    Product findById(int id);
+    ProductDto findById(int id);
 
-    Product save(Product product);
+    ProductDto save(ProductDto productDto);
 
     void delete(int id);
 }

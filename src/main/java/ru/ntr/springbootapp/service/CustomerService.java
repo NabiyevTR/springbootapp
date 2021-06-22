@@ -1,13 +1,14 @@
 package ru.ntr.springbootapp.service;
 
+import ru.ntr.springbootapp.dto.CustomerDto;
 import ru.ntr.springbootapp.model.Customer;
 
 import java.util.List;
 
 public interface CustomerService {
 
-    List<Customer> findAll();
+    List<CustomerDto> findAll();
 
-    Customer findById(int id);
+    CustomerDto findById(int id);
 
 }

@@ -2,6 +2,8 @@ package ru.ntr.springbootapp.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.ntr.springbootapp.dto.CustomerDto;
+import ru.ntr.springbootapp.mapper.CustomerMapper;
 import ru.ntr.springbootapp.model.Customer;
 import ru.ntr.springbootapp.repository.CustomerRepository;
 
@@ -14,12 +16,15 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
 
     @Override
-    public List<Customer> findAll() {
-        return customerRepository.findAll();
+    public List<CustomerDto> findAll() {
+        return CustomerMapper.fromCustomers(
+                customerRepository.findAll());
     }
 
     @Override
-    public Customer findById(int id) {
-        return customerRepository.findById(id);
+    public CustomerDto findById(int id) {
+        return CustomerMapper.fromCustomer(
+                customerRepository.findById(id)
+        );
     }
 }
