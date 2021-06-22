@@ -9,6 +9,9 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "products")
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Product {
 
     @Id
