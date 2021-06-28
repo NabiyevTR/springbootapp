@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.ntr.springbootapp.dto.UserDto;
-import ru.ntr.springbootapp.model.Role;
 import ru.ntr.springbootapp.service.UserService;
 
 @Controller
